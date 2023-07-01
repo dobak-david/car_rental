@@ -1,0 +1,19 @@
+auto adatai:
+id int
+marka string
+tipus string
+napAr int
+
+
+foglalas adatai:
+foglalasId int
+autoId int unique
+kezdete date
+vege date
+userNev string
+useremail email	
+cim string
+userTelefon int
+foglalasOsszege int
+
+megszoritas: kezdete<vege
