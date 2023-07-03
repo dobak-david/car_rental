@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cars;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReservationsController extends Controller
@@ -33,6 +34,7 @@ class ReservationsController extends Controller
      */
     public function store(Request $request)
     {
+        return to_route('index', ['start' => Carbon::now(), 'end' => Carbon::now(), 'cars' => []]);
     }
 
     /**

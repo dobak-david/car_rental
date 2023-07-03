@@ -4,7 +4,9 @@
 
     <h2>Foglalási adatok</h2>
 
-    <form>
+    <form method="POST" action="{{ route('reservations.store') }}" enctype="multipart/form-data" novalidate>
+        @csrf
+
         <div>Foglalás kezdete: {{ $start }}</div>
         <div>Foglalás vége: {{ $end }}</div>
         <h3>Autó adatai:</h3>

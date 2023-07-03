@@ -16,7 +16,7 @@ class CarsController extends Controller
     public function index(Request $request)
     {
         if($request->input('fromUser') == null) {
-            return view('cars.index', ['cars' => []]);
+            return view('cars.index', ['cars' => [], 'start' => Carbon::now(), 'end' => Carbon::now()]);
         }
 
         $request->validate( //azokat a mezoket tartalmazza helyes tipussal amik atmentek
