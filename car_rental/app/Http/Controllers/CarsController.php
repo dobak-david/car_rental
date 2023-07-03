@@ -111,15 +111,32 @@ class CarsController extends Controller
      */
     public function edit(Cars $car)
     {
-
+        return view('cars.edit', ['car' => $car]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Cars $car)
     {
-        //
+        $validated = $request->validate(
+            [
+                'marka' => 'required',
+                'tipus' => 'required',
+                'napAr' => 'required|min:0|max:100000|integer',
+            ],
+            [
+                'marka.required' => 'A márka megadása kötelező',
+                'tipus.required' => 'A típus ár megadása kötelező',
+                'napAr.required' => 'A napi ár megadása kötelező',
+                'napAr.min' => 'A napi ár 0 és 100000 közötti egész szám',
+                'napAr.max' => 'A napi ár 0 és 100000 közötti egész szám',
+                'napAr.integer' => 'A napi ár 0 és 100000 közötti egész szám',
+            ]
+        );
+        $car->update($validated);
+        Session::flash('car-updated');
+        return to_route('index');
     }
 
     /**
