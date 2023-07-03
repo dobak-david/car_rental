@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationsController;
@@ -30,8 +31,10 @@ Route::group(['prefix' => 'reservations'], function() {
 });
 
 Route::group(['middleware' => 'admin','prefix' => 'admin'], function () {
-    Route::resource('/allreservation', ReservationsController::class);
+    Route::resource('/reservations', ReservationsController::class);
 });
+
+Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

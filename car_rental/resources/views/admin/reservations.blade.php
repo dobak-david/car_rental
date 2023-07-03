@@ -2,8 +2,6 @@
 
     <h1 class="mb-2 mt-0 text-4xl font-medium leading-tight text-primary text-center">Foglalások</h1>
 
-    {{ $reservations }}
-
     <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -56,6 +54,15 @@
                         </td>
                         <td class="px-6 py-4">
                             {{ $res->osszeg }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <form action="{{ route('reservations.destroy', ['reservation' => $res->id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit" class="mb-4 bg-red-700 hover:bg-red-900 text-white">Foglalás
+                                    törlése</button>
+                            </form>
                         </td>
                     </tr>
                 @empty
