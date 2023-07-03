@@ -15,7 +15,15 @@ class ReservationsController extends Controller
      */
     public function index()
     {
-        //
+        $reservations = Reservations::with('car')->get();
+        foreach($reservations as $res) {
+            $datetime1 = new \DateTime($res->berles_kezdete);
+            $datetime2 = new \DateTime($res->berles_vege);
+            $interval = $datetime1->diff($datetime2);
+            $days = $interval->format('%a');
+            $res['osszeg'] = $days*$res->car->napAr;
+        }
+        return view('admin.reservations',['reservations' => $reservations]);
     }
 
     /**

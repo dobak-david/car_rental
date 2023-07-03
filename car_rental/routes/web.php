@@ -21,7 +21,17 @@ use Illuminate\Support\Facades\Route;
 }); */
 
 Route::resource('/', CarsController::class);
-Route::resource('/reservations', ReservationsController::class);
+
+/* Route::resource('/reservations', ReservationsController::class); */
+
+Route::group(['prefix' => 'reservations'], function() {
+    Route::get('/create', [ReservationsController::class, 'create'])->name('reservations.create');
+    Route::post('/store', [ReservationsController::class, 'store'])->name('reservations.store');
+});
+
+Route::group(['middleware' => 'admin','prefix' => 'admin'], function () {
+    Route::resource('/allreservation', ReservationsController::class);
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -33,4 +43,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
