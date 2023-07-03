@@ -24,14 +24,20 @@ class DatabaseSeeder extends Seeder
 
         for ($i = 0; $i < 10; $i++) {
             $car = Cars::factory()->create([]);
-            if($i%2==0) {
-                Reservations::factory()->create([
-                    'berlo_telefon' => 36300000000+$i,
-                    'auto_id' => $car->id
-                ]);
+            if ($i % 2 == 0) {
+                if ($i % 3 == 0) {
+                    Reservations::factory()->create([
+                        'berlo_telefon' => 36300000000 + $i,
+                        'auto_id' => $car->id,
+                        'berles_vege' => fake()->dateTimeBetween('-2 days', '-1 days')
+                    ]);
+                } else {
+                    Reservations::factory()->create([
+                        'berlo_telefon' => 36300000000 + $i,
+                        'auto_id' => $car->id,
+                    ]);
+                }
             }
         }
-
-
     }
 }

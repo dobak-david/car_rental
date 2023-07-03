@@ -12,4 +12,8 @@ class Cars extends Model
     protected $fillable = [
         'marka', 'tipus', 'napAr', 'kep'
     ];
+
+    public function reservation() {
+        return $this->belongsTo(Reservations::class, 'auto_id');
+    }
 }

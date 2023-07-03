@@ -4,10 +4,10 @@
 
     <form method="GET" action="{{ route('index') }}">
         <label for="start">Bérlés kezdete:</label>
-        <input type="date" id="start" name="start" value="2022-01-01" min="2022-01-01" max="2032-12-31">
+        <input type="date" id="start" name="start" value="2023-07-01" min="2023-01-01" max="2032-12-31">
 
         <label for="start">Bérlés vége:</label>
-        <input type="date" id="end" name="end" value="2022-01-01" min="2022-01-01" max="2032-12-31">
+        <input type="date" id="end" name="end" value="2023-07-01" min="2023-01-01" max="2032-12-31">
 
         <input type="hidden" id="end" name="fromUser" value="true">
 

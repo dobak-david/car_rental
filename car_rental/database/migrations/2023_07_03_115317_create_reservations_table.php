@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('Reservations', function (Blueprint $table) {
             $table->id();
-            $table->date('berles_kezdete');
-            $table->date('berles_vege');
+            $table->dateTime('berles_kezdete');
+            $table->dateTime('berles_vege');
             $table->string('berlo_neve');
             $table->string('berlo_email');
             $table->string('berlo_cim');
-            $table->integer('berlo_telefon'); //kimaradt
+            $table->integer('berlo_telefon');
             $table->foreignId('auto_id')->constrained('cars');
             $table->timestamps();
         });

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cars;
+use App\Models\Reservations;
+use Carbon\Carbon;
 use Mockery\Undefined;
 
 class CarsController extends Controller
@@ -17,8 +19,32 @@ class CarsController extends Controller
             return view('cars.index', ['cars' => []]);
         }
 
+        $startNew = Carbon::parse($request->date('start'));
+        $endNew = Carbon::parse($request->date('end'));
+
+        $reservations = Reservations::with('car')->get();
+/*         $reservationsActive2 = Reservations::with('car')->where('berles_kezdete','>=',$startNew)->where('berles_kezdete','<=',$endNew)->get();
+        $reservationsActive3 = Reservations::with('car')->where('berles_kezdete','>=',$startNew)->where('berles_vege','<=',$endNew)->get(); */
         $cars = Cars::all();
-        return view('cars.index', ['cars' => $cars]);
+        $carsOut = [];
+        foreach($cars as $car) {
+            $c = 0;
+            foreach($reservations as $res) {
+                if($res->car->id==$car->id && $res->berles_kezdete<=$startNew && $res->berles_vege>=$startNew) {
+                    $c++;
+                }
+                if($res->car->id==$car->id && $res->berles_kezdete<=$endNew && $res->berles_vege>=$endNew) {
+                    $c++;
+                }
+                if($res->car->id==$car->id && $res->berles_kezdete>=$startNew && $res->berles_vege<=$endNew) {
+                    $c++;
+                }
+            };
+            if($c == 0) {
+                $carsOut[] = $car;
+            }
+        }
+        return view('cars.index', ['cars' => $carsOut]);
     }
 
     /**
