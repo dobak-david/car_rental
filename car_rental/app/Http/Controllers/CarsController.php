@@ -19,12 +19,25 @@ class CarsController extends Controller
             return view('cars.index', ['cars' => []]);
         }
 
+        $request->validate( //azokat a mezoket tartalmazza helyes tipussal amik atmentek
+            [
+                'start' => 'required|date|after:' . Carbon::now(),
+                'end' => 'required|date|after:' . $request->date('start'),
+            ],
+            [
+                'start.after' => 'A kezdési dátumnak a jövőben kell lennie',
+                'start.date' => 'Rossz formátumú dátum',
+                'start.required' => 'A kezdési dátum kitöltése kötelező',
+                'end.after' => 'A bejezési dátumnak a jövőben kell lennie, a kezdési dátumnál később',
+                'end.date' => 'Rossz formátumú dátum',
+                'end.required' => 'A kezdési dátum kitöltése kötelező',
+            ]
+        );
+
         $startNew = Carbon::parse($request->date('start'));
         $endNew = Carbon::parse($request->date('end'));
 
         $reservations = Reservations::with('car')->get();
-/*         $reservationsActive2 = Reservations::with('car')->where('berles_kezdete','>=',$startNew)->where('berles_kezdete','<=',$endNew)->get();
-        $reservationsActive3 = Reservations::with('car')->where('berles_kezdete','>=',$startNew)->where('berles_vege','<=',$endNew)->get(); */
         $cars = Cars::all();
         $carsOut = [];
         foreach($cars as $car) {
@@ -44,7 +57,7 @@ class CarsController extends Controller
                 $carsOut[] = $car;
             }
         }
-        return view('cars.index', ['cars' => $carsOut]);
+        return view('cars.index', ['cars' => $carsOut, 'start' => $request->date('start')->format('Y-m-d'), 'end' => $request->date('end')->format('Y-m-d')]);
     }
 
     /**

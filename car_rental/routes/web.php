@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReservationsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 }); */
 
 Route::resource('/', CarsController::class);
+Route::resource('/reservations', ReservationsController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
