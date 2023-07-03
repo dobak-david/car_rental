@@ -8,6 +8,12 @@
         </div>
     @endif
 
+    @if (Session::get('car-created') || Session::get('reservation-created'))
+        <div class="text-2xl text-center bg-green-800 rounded-lg shadow-md shadow-green-500 mb-4 text-white">
+            Sikeres létrehozás!
+        </div>
+    @endif
+
     @if(config('admin.loggedIn',false))
         <p>ssds</p>
     @else
@@ -20,7 +26,9 @@
         <br>
     </form>
 
-    <a href="{{ route('reservations.index') }}">Foglalások megtekintése</a>
+    <a href="{{ route('reservations.index') }}">Foglalások megtekintése</a><br>
+    <a href="{{ route('cars.list') }}">Autók megtekintése és szerkesztése</a><br>
+    <a href="{{ route('cars.create') }}">Új autó hozzáadása</a>
 
     <form method="GET" action="{{ route('index') }}">
         <label for="start">Bérlés kezdete:</label>

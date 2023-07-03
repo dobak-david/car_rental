@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
 class AdminLoginController extends Controller

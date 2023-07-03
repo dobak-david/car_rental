@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Cars;
 use App\Models\Reservations;
 use Carbon\Carbon;
-use Mockery\Undefined;
+use App\Models\Cars;
+use Illuminate\Support\Facades\Session;
 
 class CarsController extends Controller
 {
+    public function listcars() {
+        $cars = Cars::all();
+        return view('cars.allcars', ['cars' => $cars]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -65,7 +70,7 @@ class CarsController extends Controller
      */
     public function create()
     {
-        //
+        return view('cars.create');
     }
 
     /**
@@ -73,7 +78,24 @@ class CarsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate(
+            [
+                'marka' => 'required',
+                'tipus' => 'required',
+                'napAr' => 'required|min:0|max:100000|integer',
+            ],
+            [
+                'marka.required' => 'A márka megadása kötelező',
+                'tipus.required' => 'A típus ár megadása kötelező',
+                'napAr.required' => 'A napi ár megadása kötelező',
+                'napAr.min' => 'A napi ár 0 és 100000 közötti egész szám',
+                'napAr.max' => 'A napi ár 0 és 100000 közötti egész szám',
+                'napAr.integer' => 'A napi ár 0 és 100000 közötti egész szám',
+            ]
+        );
+        Cars::create($validated);
+        Session::flash('car-created');
+        return to_route('index');
     }
 
     /**
@@ -87,9 +109,9 @@ class CarsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Cars $car)
     {
-        //
+
     }
 
     /**
