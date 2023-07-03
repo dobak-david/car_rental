@@ -20,7 +20,12 @@ class ReservationsController extends Controller
      */
     public function create(Request $request)
     {
-        return view('reservations.newReservation');
+        $car = Cars::all()->where('id','=',$request->input('car'))[$request->input('car')-1];
+        $datetime1 = new \DateTime($request->date('end'));
+        $datetime2 = new \DateTime($request->date('start'));
+        $interval = $datetime1->diff($datetime2);
+        $days = $interval->format('%a');
+        return view('reservations.newReservation', ['start' => $request->date('start')->format('Y.m.d'), 'end' => $request->date('end')->format('Y.m.d'), 'car' => $car, 'daysNum' => $days+1]);
     }
 
     /**
@@ -28,7 +33,6 @@ class ReservationsController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
