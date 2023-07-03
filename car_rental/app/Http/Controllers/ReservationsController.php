@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cars;
+use App\Models\Reservations;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ReservationsController extends Controller
 {
@@ -26,7 +28,7 @@ class ReservationsController extends Controller
         $datetime2 = new \DateTime($request->date('start'));
         $interval = $datetime1->diff($datetime2);
         $days = $interval->format('%a');
-        return view('reservations.newReservation', ['start' => $request->date('start')->format('Y.m.d'), 'end' => $request->date('end')->format('Y.m.d'), 'car' => $car, 'daysNum' => $days+1]);
+        return view('reservations.newReservation', ['start' => $request->date('start')->format('Y-m-d'), 'end' => $request->date('end')->format('Y-m-d'), 'car' => $car, 'daysNum' => $days+1]);
     }
 
     /**
@@ -34,7 +36,24 @@ class ReservationsController extends Controller
      */
     public function store(Request $request)
     {
-        return to_route('index', ['start' => Carbon::now(), 'end' => Carbon::now(), 'cars' => []]);
+        $validated = $request->validate(
+            [
+                'berlo_neve' => 'required',
+                'berlo_cim' => 'required',
+                'berlo_email' => 'required|regex:/^.+@.+$/i',
+                'berlo_telefon' => 'required|regex:/[0-9]{2}-[0-9]{3}-[0-9]{2}-[0-9]{2}/',
+                'berles_kezdete' => 'required',
+                'berles_vege' => 'required',
+                'auto_id' => 'required',
+            ],
+            [
+                'email.regex' => 'Az email rossz formátumú',
+                'phone.regex' => 'A telefon rossz formátumú'
+            ]
+        );
+        Reservations::create($validated);
+        Session::flash('reservation-created');
+        return to_route('index', ['start' => Carbon::now()->format('Y.m.d'), 'end' => Carbon::now()->format('Y.m.d'), 'cars' => []]);
     }
 
     /**

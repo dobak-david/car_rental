@@ -19,7 +19,7 @@ class CarsController extends Controller
             return view('cars.index', ['cars' => [], 'start' => Carbon::now(), 'end' => Carbon::now()]);
         }
 
-        $request->validate( //azokat a mezoket tartalmazza helyes tipussal amik atmentek
+        $request->validate(
             [
                 'start' => 'required|date|after:' . Carbon::now(),
                 'end' => 'required|date|after:' . $request->date('start'),
@@ -34,8 +34,8 @@ class CarsController extends Controller
             ]
         );
 
-        $startNew = Carbon::parse($request->date('start'));
-        $endNew = Carbon::parse($request->date('end'));
+        $startNew = Carbon::parse($request->date('start'))->format('Y-m-d');
+        $endNew = Carbon::parse($request->date('end'))->format('Y-m-d');
 
         $reservations = Reservations::with('car')->get();
         $cars = Cars::all();
