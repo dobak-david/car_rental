@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Cars;
+use App\Models\Reservations;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,8 +22,16 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-            for($i=0;$i<10;$i++) {
-                Cars::factory()->create([]);
+        for ($i = 0; $i < 10; $i++) {
+            $car = Cars::factory()->create([]);
+            if($i%2==0) {
+                Reservations::factory()->create([
+                    'berlo_telefon' => 36300000000+$i,
+                    'auto_id' => $car->id
+                ]);
             }
+        }
+
+
     }
 }

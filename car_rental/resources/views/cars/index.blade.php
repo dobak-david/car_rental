@@ -9,6 +9,8 @@
         <label for="start">Bérlés vége:</label>
         <input type="date" id="end" name="end" value="2022-01-01" min="2022-01-01" max="2032-12-31">
 
+        <input type="hidden" id="end" name="fromUser" value="true">
+
         <button type="submit"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             Szabad autók keresése

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cars;
+use Mockery\Undefined;
 
 class CarsController extends Controller
 {
@@ -12,6 +13,10 @@ class CarsController extends Controller
      */
     public function index(Request $request)
     {
+        if($request->input('fromUser') == null) {
+            return view('cars.index', ['cars' => []]);
+        }
+
         $cars = Cars::all();
         return view('cars.index', ['cars' => $cars]);
     }
