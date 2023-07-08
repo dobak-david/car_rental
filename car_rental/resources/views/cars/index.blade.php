@@ -1,7 +1,7 @@
 <x-guest-layout>
     <h1 class="mb-2 mt-0 text-4xl font-medium leading-tight text-primary text-center">Főoldal - Autók</h1>
 
-    @if (Session::get('reservation-deleted'))
+    @if (Session::get('reservation-deleted') || Session::get('car-deleted'))
         <div class="text-2xl text-center bg-green-800 rounded-lg shadow-md shadow-green-500 mb-4 text-white">
             Sikeres törlés!
         </div>
@@ -18,6 +18,7 @@
             Sikeres módosítás!
         </div>
     @endif
+
 
     {{--     @if (config('admin.loggedIn', false))
         <p>ssds</p>

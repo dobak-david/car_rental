@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string("tipus");
             $table->integer("napAr");
             $table->string("kep")->nullable(true);
+
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Storage;
 
 class CarsController extends Controller
 {
-    public function listcars() {
+    public function listcars()
+    {
         $cars = Cars::all();
         return view('cars.allcars', ['cars' => $cars]);
     }
@@ -22,7 +23,7 @@ class CarsController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->input('fromUser') == null) {
+        if ($request->input('fromUser') == null) {
             return view('cars.index', ['cars' => [], 'start' => Carbon::now(), 'end' => Carbon::now()]);
         }
 
@@ -47,20 +48,20 @@ class CarsController extends Controller
         $reservations = Reservations::with('car')->get();
         $cars = Cars::all();
         $carsOut = [];
-        foreach($cars as $car) {
+        foreach ($cars as $car) {
             $c = 0;
-            foreach($reservations as $res) {
-                if($res->car->id==$car->id && $res->berles_kezdete<=$startNew && $res->berles_vege>=$startNew) {
+            foreach ($reservations as $res) {
+                if ($res->car->id == $car->id && $res->berles_kezdete <= $startNew && $res->berles_vege >= $startNew) {
                     $c++;
                 }
-                if($res->car->id==$car->id && $res->berles_kezdete<=$endNew && $res->berles_vege>=$endNew) {
+                if ($res->car->id == $car->id && $res->berles_kezdete <= $endNew && $res->berles_vege >= $endNew) {
                     $c++;
                 }
-                if($res->car->id==$car->id && $res->berles_kezdete>=$startNew && $res->berles_vege<=$endNew) {
+                if ($res->car->id == $car->id && $res->berles_kezdete >= $startNew && $res->berles_vege <= $endNew) {
                     $c++;
                 }
             };
-            if($c == 0) {
+            if ($c == 0) {
                 $carsOut[] = $car;
             }
         }
@@ -96,10 +97,10 @@ class CarsController extends Controller
             ]
         );
 
-        if ($request -> hasFile('kep')){
-            $file = $request -> file('kep');
-            $fname = $file -> hashName();
-            Storage::disk('public') -> put('images/' . $fname, $file -> get());
+        if ($request->hasFile('kep')) {
+            $file = $request->file('kep');
+            $fname = $file->hashName();
+            Storage::disk('public')->put('images/' . $fname, $file->get());
             $validated['kep'] = $fname;
         }
 
@@ -145,10 +146,10 @@ class CarsController extends Controller
             ]
         );
 
-        if ($request -> hasFile('kep')){
-            $file = $request -> file('kep');
-            $fname = $file -> hashName();
-            Storage::disk('public') -> put('images/' . $fname, $file -> get());
+        if ($request->hasFile('kep')) {
+            $file = $request->file('kep');
+            $fname = $file->hashName();
+            Storage::disk('public')->put('images/' . $fname, $file->get());
             $validated['kep'] = $fname;
         } else {
             $validated['kep'] = $car['image'];
@@ -165,8 +166,16 @@ class CarsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Cars $car)
     {
-        //
+        $car1 = Cars::all()->where('id','=',$car);
+        $reservationsCount = Reservations::all()->where('auto_id', '=', $car->id)->count();
+        if ($reservationsCount > 0) {
+            Session::flash('car-delete-cant');
+        } else {
+            $car->delete();
+            Session::flash('car-deleted');
+        }
+        return view('cars.allcars', ['cars' => Cars::all(), 'car' => $car1]);
     }
 }

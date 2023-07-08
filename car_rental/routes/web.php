@@ -39,6 +39,7 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'], function () {
     Route::get('/cars/{car}/edit', [CarsController::class, 'edit'])->name('cars.edit');
     Route::get('/cars/create', [CarsController::class, 'create'])->name('cars.create');
     Route::post('/cars/store', [CarsController::class, 'store'])->name('cars.store');
+    Route::delete('/cars/{car}', [CarsController::class, 'destroy'])->name('cars.destroy');
     Route::patch('/cars/update/{car}', [CarsController::class, 'update'])->name('cars.update');
 
 });
