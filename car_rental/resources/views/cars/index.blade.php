@@ -101,7 +101,16 @@
                                 {{ $car->napAr }}
                             </td>
                             <td class="px-6 py-4">
-                                <img src="{{ $car->kep }}" alt="kep_auto" width="100">
+                                @if ($car->kep === null)
+                                    <div>Nincsen feltöltött kép</div>
+                                @else
+                                    @if (str_contains(Storage::url('images/' . $car->kep), 'via.placeholder'))
+                                        <img src="{{ $car->kep }}" alt="kep_auto" width="100px">
+                                    @else
+                                        <img src="{{ Storage::url('images/' . $car->kep) }}" alt="kep_auto"
+                                            width="100px">
+                                    @endif
+                                @endif
                             </td>
                             <td>
                                 <a href="{{ route('reservations.create', ['start' => $start, 'end' => $end, 'car' => $car]) }}"

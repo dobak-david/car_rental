@@ -7,6 +7,8 @@ use App\Models\Reservations;
 use Carbon\Carbon;
 use App\Models\Cars;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+
 
 class CarsController extends Controller
 {
@@ -93,6 +95,14 @@ class CarsController extends Controller
                 'napAr.integer' => 'A napi ár 0 és 100000 közötti egész szám',
             ]
         );
+
+        if ($request -> hasFile('kep')){
+            $file = $request -> file('kep');
+            $fname = $file -> hashName();
+            Storage::disk('public') -> put('images/' . $fname, $file -> get());
+            $validated['kep'] = $fname;
+        }
+
         Cars::create($validated);
         Session::flash('car-created');
         return to_route('index');

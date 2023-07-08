@@ -3,7 +3,7 @@
         <h1>Új autó felvitele</h1>
     </div>
     <div class="w-96 mx-auto">
-        <form method="POST" action="{{ route('cars.store') }}" novalidate>
+        <form method="POST" action="{{ route('cars.store') }}" novalidate enctype="multipart/form-data">
             @csrf
 
             <div class="grid md:grid-cols-2 md:gap-6">
@@ -37,6 +37,12 @@
                     @error('napAr')
                         <span class="text-red-600">{{ $message }}</span><br>
                     @enderror
+                    <br>
+
+                    <label for="kep" class="mb-2 mt-0 text-l font-medium leading-tight text-primary">
+                        Kép feltöltése az autóról
+                    </label>
+                    <input type="file" name="kep" value="{{ old('kep') }}"><br>
                 </div>
             </div>
 
