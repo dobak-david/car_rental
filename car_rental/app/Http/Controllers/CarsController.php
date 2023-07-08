@@ -144,7 +144,20 @@ class CarsController extends Controller
                 'napAr.integer' => 'A napi ár 0 és 100000 közötti egész szám',
             ]
         );
+
+        if ($request -> hasFile('kep')){
+            $file = $request -> file('kep');
+            $fname = $file -> hashName();
+            Storage::disk('public') -> put('images/' . $fname, $file -> get());
+            $validated['kep'] = $fname;
+        } else {
+            $validated['kep'] = $car['image'];
+        }
+
         $car->update($validated);
+
+        $car->save();
+
         Session::flash('car-updated');
         return to_route('index');
     }
