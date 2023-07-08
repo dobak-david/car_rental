@@ -17,7 +17,7 @@ class ReservationsFactory extends Factory
     public function definition(): array
     {
         return [
-            'berles_kezdete' => $this->faker->dateTimeBetween('-3 days','-1 days'),
+            'berles_kezdete' => $this->faker->dateTimeBetween('-4 days','-3 days'),
             'berles_vege' => $this->faker->dateTimeBetween('1 days','3 days'),
             'berlo_neve' => $this->faker->sentence(2),
             'berlo_email' => $this->faker->email(),
