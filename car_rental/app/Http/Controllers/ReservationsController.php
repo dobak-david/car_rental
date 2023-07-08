@@ -10,33 +10,75 @@ use Illuminate\Support\Facades\Session;
 
 class ReservationsController extends Controller
 {
-    public function listduereservations() {
+    /**
+     * Display a due reservations.
+     */
+    public function listduereservations()
+    {
         $currentTime = Carbon::now();
 
-        $reservations = Reservations::with('car')->where('berles_vege','<',$currentTime)->get();
-        foreach($reservations as $res) {
+        $reservations = Reservations::with('car')->where('berles_vege', '<', $currentTime)->get();
+        foreach ($reservations as $res) {
             $datetime1 = new \DateTime($res->berles_kezdete);
             $datetime2 = new \DateTime($res->berles_vege);
             $interval = $datetime1->diff($datetime2);
             $days = $interval->format('%a');
-            $res['osszeg'] = $days*$res->car->napAr;
+            $res['osszeg'] = $days * $res->car->napAr;
         }
-        return view('admin.reservations',['reservations' => $reservations, 'mode' => "Múltbeli foglalások"]);
+        return view('admin.reservations', ['reservations' => $reservations, 'mode' => "Múltbeli foglalások"]);
     }
+
+    /**
+     * Display active reservations.
+     */
+    public function listactivereservations()
+    {
+        $currentTime = Carbon::now();
+
+        $reservations = Reservations::with('car')->where('berles_vege', '>=', $currentTime)
+            ->where('berles_kezdete', '<=', $currentTime)->get();
+        foreach ($reservations as $res) {
+            $datetime1 = new \DateTime($res->berles_kezdete);
+            $datetime2 = new \DateTime($res->berles_vege);
+            $interval = $datetime1->diff($datetime2);
+            $days = $interval->format('%a');
+            $res['osszeg'] = $days * $res->car->napAr;
+        }
+        return view('admin.reservations', ['reservations' => $reservations, 'mode' => "Aktív foglalások"]);
+    }
+
+    /**
+     * Display future reservations.
+     */
+    public function listfuturereservations()
+    {
+        $currentTime = Carbon::now();
+
+        $reservations = Reservations::with('car')->where('berles_kezdete', '>', $currentTime)->get();
+        foreach ($reservations as $res) {
+            $datetime1 = new \DateTime($res->berles_kezdete);
+            $datetime2 = new \DateTime($res->berles_vege);
+            $interval = $datetime1->diff($datetime2);
+            $days = $interval->format('%a');
+            $res['osszeg'] = $days * $res->car->napAr;
+        }
+        return view('admin.reservations', ['reservations' => $reservations, 'mode' => "Jövőbeli foglalások"]);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $reservations = Reservations::with('car')->get();
-        foreach($reservations as $res) {
+        foreach ($reservations as $res) {
             $datetime1 = new \DateTime($res->berles_kezdete);
             $datetime2 = new \DateTime($res->berles_vege);
             $interval = $datetime1->diff($datetime2);
             $days = $interval->format('%a');
-            $res['osszeg'] = $days*$res->car->napAr;
+            $res['osszeg'] = $days * $res->car->napAr;
         }
-        return view('admin.reservations',['reservations' => $reservations, 'mode' => "Összes foglalás"]);
+        return view('admin.reservations', ['reservations' => $reservations, 'mode' => "Összes foglalás"]);
     }
 
     /**
@@ -44,12 +86,12 @@ class ReservationsController extends Controller
      */
     public function create(Request $request)
     {
-        $car = Cars::all()->where('id','=',$request->input('car'))[$request->input('car')-1];
+        $car = Cars::all()->where('id', '=', $request->input('car'))[$request->input('car') - 1];
         $datetime1 = new \DateTime($request->date('end'));
         $datetime2 = new \DateTime($request->date('start'));
         $interval = $datetime1->diff($datetime2);
         $days = $interval->format('%a');
-        return view('reservations.newReservation', ['start' => $request->date('start')->format('Y-m-d'), 'end' => $request->date('end')->format('Y-m-d'), 'car' => $car, 'daysNum' => $days+1]);
+        return view('reservations.newReservation', ['start' => $request->date('start')->format('Y-m-d'), 'end' => $request->date('end')->format('Y-m-d'), 'car' => $car, 'daysNum' => $days + 1]);
     }
 
     /**

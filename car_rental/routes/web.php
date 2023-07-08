@@ -33,7 +33,9 @@ Route::group(['prefix' => 'reservations'], function() {
 Route::group(['middleware' => 'admin','prefix' => 'admin'], function () {
     Route::resource('/reservations', ReservationsController::class);
     Route::get('/cars', [CarsController::class, 'listcars'])->name('cars.list');
-    Route::get('/cars', [ReservationsController::class, 'listduereservations'])->name('reservations.listpast');
+    Route::get('/cars/due', [ReservationsController::class, 'listduereservations'])->name('reservations.listpast');
+    Route::get('/cars/active', [ReservationsController::class, 'listactivereservations'])->name('reservations.listactive');
+    Route::get('/cars/future', [ReservationsController::class, 'listfuturereservations'])->name('reservations.listfuture');
     Route::get('/cars/{car}/edit', [CarsController::class, 'edit'])->name('cars.edit');
     Route::get('/cars/create', [CarsController::class, 'create'])->name('cars.create');
     Route::post('/cars/store', [CarsController::class, 'store'])->name('cars.store');
