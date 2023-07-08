@@ -1,5 +1,4 @@
 <x-guest-layout>
-
     <h1 class="mb-2 mt-0 text-4xl font-medium leading-tight text-primary text-center">Főoldal - Autók</h1>
 
     @if (Session::get('reservation-deleted'))
@@ -42,13 +41,21 @@
         <a class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
             href="{{ route('cars.create') }}">Új autó hozzáadása</a><br><br>
 
+        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+
+
         <form method="GET" action="{{ route('index') }}">
+            <div class="mb-2 mt-0 text-3xl font-medium leading-tight text-primary">
+                <h1>Szabad autók keresése</h1>
+            </div>
+
             <label for="start">Bérlés kezdete:</label>
             <input type="date" id="start" name="start" value="{{ $start }}" min="2023-01-01"
                 max="2032-12-31">
             @error('start')
                 <span class="text-red-600">{{ $message }}</span><br>
             @enderror
+            <br>
 
             <br>
             <label for="start">Bérlés vége:</label>
@@ -59,11 +66,11 @@
             @enderror
 
             <input type="hidden" id="end" name="fromUser" value="true">
-            <br>
+            <br><br>
 
             <button type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Szabad autók keresése
+                Keresés
             </button>
         </form>
     </div>

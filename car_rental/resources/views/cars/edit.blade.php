@@ -3,7 +3,7 @@
         <h1>Autó szerkesztése</h1>
     </div>
 
-    <form method="POST" action="{{ route('cars.update', ['car' => $car]) }}" enctype="multipart/form-data" novalidate>
+    <form method="POST" action="{{ route('cars.update', ['car' => $car]) }}" enctype="multipart/form-data" class="w-96 mx-auto" novalidate>
         @csrf
         @method('PATCH')
 
@@ -37,7 +37,7 @@
                     bérlés ára forintban</label>
                 @error('napAr')
                     <span class="text-red-600">{{ $message }}</span><br>
-                @enderror
+                @enderror<br>
 
                 <label for="kep" class="mb-2 mt-0 text-l font-medium leading-tight text-primary">
                     Kép feltöltése az autóról
