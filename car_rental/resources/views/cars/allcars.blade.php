@@ -1,6 +1,6 @@
 <x-guest-layout>
 
-    <h1 class="mb-2 mt-0 text-4xl font-medium leading-tight text-primary text-center">Autok</h1>
+    <h1 class="mb-2 mt-0 text-4xl font-medium leading-tight text-primary text-center">Autók</h1>
 
     <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
