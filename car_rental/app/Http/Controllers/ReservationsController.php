@@ -10,6 +10,19 @@ use Illuminate\Support\Facades\Session;
 
 class ReservationsController extends Controller
 {
+    public function listduereservations() {
+        $currentTime = Carbon::now();
+
+        $reservations = Reservations::with('car')->where('berles_vege','<',$currentTime)->get();
+        foreach($reservations as $res) {
+            $datetime1 = new \DateTime($res->berles_kezdete);
+            $datetime2 = new \DateTime($res->berles_vege);
+            $interval = $datetime1->diff($datetime2);
+            $days = $interval->format('%a');
+            $res['osszeg'] = $days*$res->car->napAr;
+        }
+        return view('admin.reservations',['reservations' => $reservations, 'mode' => "Múltbeli foglalások"]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -23,7 +36,7 @@ class ReservationsController extends Controller
             $days = $interval->format('%a');
             $res['osszeg'] = $days*$res->car->napAr;
         }
-        return view('admin.reservations',['reservations' => $reservations]);
+        return view('admin.reservations',['reservations' => $reservations, 'mode' => "Összes foglalás"]);
     }
 
     /**
