@@ -26,7 +26,18 @@ class carsTest extends TestCase
      */
     public function test_example(): void
     {
-        $response = $this->get('admin/cars');
+        $response = $this->get('/admin/cars');
+        $response->assertStatus(200);
+        $response->assertJsonCount(5, 'data');
+    }
+
+    /**
+     * A basic feature test example.
+     */
+    public function test_delete_car(): void
+    {
+        $c = Cars::all()->where('id','=',1);
+        $response = $this->delete('/admin/cars/{' . $c . '}');
         $response->assertStatus(200);
     }
 }
